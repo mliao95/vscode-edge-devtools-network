@@ -3,48 +3,8 @@
 import { getTextFromFile } from "../../test/helpers";
 
 describe("simpleView", () => {
-    it("revealInVSCode calls openInEditor", async () => {
-        const apply = await import("./simpleView");
-        const expected = {
-            columnNumber: 0,
-            lineNumber: 0,
-            omitFocus: false,
-            uiSourceCode: {
-                _url: "http://bing.com",
-            },
-        };
-        const mockOpen = jest.fn();
-        (global as any).InspectorFrontendHost = {
-            openInEditor: mockOpen,
-        };
-
-        await apply.revealInVSCode(expected, expected.omitFocus);
-
-        expect(mockOpen).toHaveBeenCalled();
-    });
-
-    // it("applyCommonRevealerPatch correctly changes text", async () => {
-    //     const comparableText =  "Common.Revealer.reveal = function(revealable, omitFocus) { // code";
-    //     let fileContents = getTextFromFile("common/Revealer.js");
-
-    //     // The file was not found, so test that at least the text is being replaced.
-    //     fileContents = fileContents ? fileContents : comparableText;
-    //     const apply = await import("./simpleView");
-    //     const result = apply.applyCommonRevealerPatch(fileContents);
-    //     expect(result).not.toEqual(null);
-    //     expect(result).toEqual(
-    //         expect.stringContaining("Common.Revealer.reveal = function revealInVSCode(revealable, omitFocus) {"));
-    // });
-
     it("applyInspectorViewPatch correctly changes text", async () => {
         const apply = await import("./simpleView");
-        // const result = apply.applyInspectorViewPatch(
-        //     "handleAction(context, actionId) { // code");
-        // expect(result).toEqual("handleAction(context, actionId) { return false; // code");
-
-        // const result2 = apply.applyInspectorViewPatch(
-        //     "handleAction(context,actionId) { // code");
-        // expect(result2).toEqual("handleAction(context, actionId) { return false; // code");
 
         const comparableText3 = "this._showDrawer.bind(this, false), 'drawer-view', true, true // code";
         let fileContents3 = getTextFromFile("ui/ui.js");
@@ -63,12 +23,6 @@ describe("simpleView", () => {
         expect(result4).not.toEqual(null);
         expect(result4).toEqual("InspectorFrontendHostInstance), 'panel', true, true, 'network' // code");
     });
-
-    // it("applyMainViewPatch correctly changes text", async () => {
-    //     const apply = await import("./simpleView");
-    //     const result = apply.applyMainViewPatch("const moreTools = getExtensions();");
-    //     expect(result).toEqual("const moreTools = { defaultSection: () => ({ appendItem: () => {} }) };");
-    // });
 
     it("applySelectTabPatch correctly changes text", async () => {
         const apply = await import("./simpleView");
